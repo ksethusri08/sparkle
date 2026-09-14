@@ -14,8 +14,9 @@
 
         html, body {
             width: 100%;
-            height: 100%;
+            height: 100vh;
             font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
         }
 
         :root {
@@ -33,7 +34,6 @@
         body {
             background: var(--bg);
             color: var(--text-primary);
-            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -57,10 +57,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 15px;
             opacity: 0;
             pointer-events: none;
-            overflow-y: auto;
         }
 
         .page.active {
@@ -69,7 +68,7 @@
             z-index: 10;
         }
 
-        /* PAGE 1 TRANSITION */
+        /* PAGE TRANSITIONS */
         .page-1 {
             background: linear-gradient(135deg, #0F0A1A 0%, #1a0f2e 100%);
             transition: opacity 0.8s ease, transform 0.8s ease;
@@ -80,7 +79,6 @@
             transform: scale(1);
         }
 
-        /* PAGE 2 TRANSITION */
         .page-2 {
             background: linear-gradient(135deg, #1a0f2e 0%, #2a1a4e 100%);
             transition: opacity 1s ease, transform 1s ease;
@@ -91,7 +89,6 @@
             transform: rotateX(0deg);
         }
 
-        /* PAGE 3 TRANSITION */
         .page-3 {
             background: linear-gradient(135deg, #2a1a4e 0%, #0F0A1A 100%);
             transition: opacity 1.2s ease, transform 1.2s ease;
@@ -109,391 +106,333 @@
             height: 100%;
             overflow: hidden;
             pointer-events: none;
+            display: none;
         }
 
         .floating-heart {
             position: absolute;
-            font-size: 30px;
+            font-size: 20px;
             animation: float-heart 6s ease-in-out infinite;
-            opacity: 0.6;
+            opacity: 0.4;
         }
 
         @keyframes float-heart {
             0% { transform: translateY(0) translateX(0) rotate(0deg) scale(1); }
-            50% { transform: translateY(-50px) translateX(30px) rotate(180deg) scale(1.1); }
+            50% { transform: translateY(-30px) translateX(20px) rotate(180deg) scale(0.9); }
             100% { transform: translateY(0) translateX(0) rotate(360deg) scale(1); }
         }
 
-        /* PAGE 1: SELECTION */
-        .selection-card {
-            background: rgba(26, 15, 46, 0.8);
+        /* CARDS */
+        .card {
+            background: rgba(26, 15, 46, 0.9);
             backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 40px 35px;
-            max-width: 600px;
-            width: 95%;
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 95%;
+            width: 100%;
             text-align: center;
-            box-shadow: 0 0 60px rgba(255, 0, 110, 0.4);
-            border: 2px solid rgba(255, 0, 110, 0.3);
+            box-shadow: 0 0 40px rgba(255, 0, 110, 0.3);
+            border: 2px solid rgba(255, 0, 110, 0.2);
             position: relative;
             z-index: 5;
         }
 
         .heading {
             font-family: 'Fredoka', sans-serif;
-            font-size: 42px;
+            font-size: 32px;
             font-weight: 700;
             background: linear-gradient(135deg, #FF006E 0%, #00D9FF 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 20px;
-            animation: glow 2s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { text-shadow: 0 0 10px rgba(255, 0, 110, 0.5); }
-            50% { text-shadow: 0 0 30px rgba(0, 217, 255, 0.8); }
+            margin-bottom: 12px;
         }
 
         .message-text {
-            font-size: 18px;
+            font-size: 14px;
             color: var(--text-secondary);
-            margin: 25px 0;
-            min-height: 60px;
-            line-height: 1.6;
+            margin: 12px 0;
+            min-height: 40px;
+            line-height: 1.4;
         }
 
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 30px;
+            gap: 8px;
+            margin-top: 15px;
         }
 
         .option-btn {
-            padding: 15px 20px;
+            padding: 10px 12px;
             font-family: 'Fredoka', sans-serif;
-            font-size: 16px;
+            font-size: 12px;
             font-weight: 700;
-            border: 2px solid rgba(255, 0, 110, 0.5);
+            border: 2px solid rgba(255, 0, 110, 0.4);
             background: rgba(255, 0, 110, 0.1);
             color: #FF006E;
-            border-radius: 15px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-            overflow: hidden;
+            letter-spacing: 1px;
         }
 
-        .option-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 0, 110, 0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .option-btn:hover::before {
-            left: 100%;
-        }
-
-        .option-btn:hover {
-            background: rgba(255, 0, 110, 0.3);
-            box-shadow: 0 0 20px rgba(255, 0, 110, 0.6);
-            transform: scale(1.05);
-        }
-
-        .option-btn.active {
+        .option-btn:active {
             background: linear-gradient(135deg, #FF006E 0%, #FF3B7F 100%);
             color: white;
-            box-shadow: 0 0 30px rgba(255, 0, 110, 0.8);
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.6);
         }
 
-        /* PAGE 2: MESSAGE */
+        /* PAGE 2 */
         .message-card {
-            background: rgba(26, 15, 46, 0.8);
+            background: rgba(26, 15, 46, 0.9);
             backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 40px 35px;
-            max-width: 650px;
-            width: 95%;
+            border-radius: 20px;
+            padding: 18px;
+            max-width: 95%;
+            width: 100%;
             text-align: center;
-            box-shadow: 0 0 60px rgba(0, 217, 255, 0.4);
-            border: 2px solid rgba(0, 217, 255, 0.3);
+            box-shadow: 0 0 40px rgba(0, 217, 255, 0.3);
+            border: 2px solid rgba(0, 217, 255, 0.2);
             position: relative;
             z-index: 5;
         }
 
         .msg-title {
             font-family: 'Fredoka', sans-serif;
-            font-size: 36px;
+            font-size: 24px;
             font-weight: 700;
             color: #00D9FF;
-            margin-bottom: 30px;
-            min-height: 45px;
-            animation: pulse-glow 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { text-shadow: 0 0 15px rgba(0, 217, 255, 0.5); }
-            50% { text-shadow: 0 0 40px rgba(0, 217, 255, 0.9); }
+            margin-bottom: 10px;
+            min-height: 30px;
         }
 
         .msg-body {
-            font-size: 17px;
+            font-size: 13px;
             color: var(--text-secondary);
-            line-height: 1.8;
-            margin: 20px 0;
-            min-height: 100px;
+            line-height: 1.5;
+            margin: 12px 0;
+            min-height: 60px;
         }
 
         .heart-icon {
-            font-size: 50px;
-            margin: 20px 0;
+            font-size: 35px;
+            margin: 8px 0;
             animation: beat 1s ease-in-out infinite;
         }
 
         @keyframes beat {
             0%, 100% { transform: scale(1); }
-            25% { transform: scale(1.2); }
+            25% { transform: scale(1.15); }
             50% { transform: scale(1); }
         }
 
-        /* PAGE 3: BIRTHDAY PICKER */
+        /* PAGE 3 */
         .calendar-card {
-            background: rgba(26, 15, 46, 0.8);
+            background: rgba(26, 15, 46, 0.9);
             backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 40px 35px;
-            max-width: 700px;
-            width: 95%;
+            border-radius: 20px;
+            padding: 18px;
+            max-width: 95%;
+            width: 100%;
             text-align: center;
-            box-shadow: 0 0 60px rgba(255, 183, 3, 0.4);
-            border: 2px solid rgba(255, 183, 3, 0.3);
+            box-shadow: 0 0 40px rgba(255, 183, 3, 0.3);
+            border: 2px solid rgba(255, 183, 3, 0.2);
             position: relative;
             z-index: 5;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .calendar-title {
             font-family: 'Fredoka', sans-serif;
-            font-size: 36px;
+            font-size: 24px;
             font-weight: 700;
             color: #FFB703;
-            margin-bottom: 30px;
+            margin-bottom: 12px;
         }
 
         .date-inputs {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-            margin: 25px 0;
+            gap: 8px;
+            margin: 12px 0;
         }
 
         .date-input {
-            padding: 15px;
-            font-size: 16px;
-            border: 2px solid rgba(255, 183, 3, 0.5);
+            padding: 10px;
+            font-size: 13px;
+            border: 2px solid rgba(255, 183, 3, 0.4);
             background: rgba(255, 183, 3, 0.1);
             color: var(--text-primary);
-            border-radius: 12px;
+            border-radius: 10px;
             font-family: 'Fredoka', sans-serif;
             font-weight: 600;
             text-align: center;
         }
 
-        .date-input:focus {
-            outline: none;
-            background: rgba(255, 183, 3, 0.2);
-            box-shadow: 0 0 20px rgba(255, 183, 3, 0.6);
-        }
-
         .date-label {
-            font-size: 12px;
+            font-size: 10px;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 5px;
+            letter-spacing: 1px;
+            margin-top: 3px;
         }
 
         .submit-btn {
-            margin-top: 25px;
-            padding: 15px 40px;
+            margin-top: 12px;
+            padding: 10px 20px;
             font-family: 'Fredoka', sans-serif;
-            font-size: 16px;
+            font-size: 12px;
             font-weight: 700;
             border: none;
             background: linear-gradient(135deg, #FFB703 0%, #FFC107 100%);
             color: #000;
-            border-radius: 15px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
-        .submit-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 183, 3, 0.8);
+        .submit-btn:active {
+            transform: scale(0.95);
         }
 
-        /* COUNTDOWN DISPLAY */
         .countdown-display {
-            margin-top: 40px;
+            margin-top: 12px;
             display: none;
         }
 
         .countdown-display.show {
             display: block;
-            animation: slideIn 1s ease-out;
-        }
-
-        @keyframes slideIn {
-            0% { opacity: 0; transform: translateY(50px); }
-            100% { opacity: 1; transform: translateY(0); }
         }
 
         .countdown-grid {
             display: flex;
-            gap: 15px;
+            gap: 8px;
             justify-content: center;
             flex-wrap: wrap;
-            margin: 30px 0;
+            margin: 12px 0;
         }
 
         .countdown-box {
             background: rgba(255, 183, 3, 0.1);
-            border: 2px solid rgba(255, 183, 3, 0.4);
-            border-radius: 15px;
-            padding: 20px 25px;
-            min-width: 100px;
-            position: relative;
+            border: 2px solid rgba(255, 183, 3, 0.3);
+            border-radius: 10px;
+            padding: 10px 12px;
+            min-width: 70px;
         }
 
         .countdown-num {
             font-family: 'Fredoka', sans-serif;
-            font-size: 45px;
+            font-size: 28px;
             font-weight: 700;
             background: linear-gradient(135deg, #FFB703 0%, #FFC107 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: countdownDrop 1s ease-out;
-        }
-
-        @keyframes countdownDrop {
-            0% { opacity: 0; transform: translateY(-50px) scale(0.8); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .countdown-label {
-            font-size: 12px;
+            font-size: 9px;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 8px;
-        }
-
-        .countdown-box:nth-child(2) .countdown-num {
-            animation: countdownUp 1s ease-out;
-        }
-
-        @keyframes countdownUp {
-            0% { opacity: 0; transform: translateY(50px) scale(0.8); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
+            letter-spacing: 1px;
+            margin-top: 4px;
         }
 
         .quote-section {
-            margin-top: 30px;
-            padding: 20px;
-            border-top: 2px solid rgba(255, 183, 3, 0.3);
+            margin-top: 12px;
+            padding: 10px;
+            border-top: 2px solid rgba(255, 183, 3, 0.2);
         }
 
         .funny-quote {
-            font-size: 18px;
+            font-size: 12px;
             color: #00D9FF;
             font-style: italic;
-            margin-bottom: 20px;
-            min-height: 40px;
+            margin-bottom: 8px;
+            min-height: 30px;
         }
 
         .waiting-msg {
-            font-size: 16px;
+            font-size: 11px;
             color: #FF006E;
             font-weight: 600;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
-        /* MOBILE RESPONSIVE */
-        @media (max-width: 768px) {
-            .heading {
-                font-size: 32px;
-            }
+        /* MUSIC BUTTON - ALWAYS VISIBLE */
+        .music-button {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 1000;
+        }
 
-            .selection-card {
-                padding: 30px 20px;
-            }
+        .music-btn-style {
+            padding: 10px 14px;
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #FF006E 0%, #00D9FF 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+            transition: all 0.3s ease;
+        }
 
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .message-card {
-                padding: 30px 20px;
-            }
-
-            .msg-title {
-                font-size: 28px;
-            }
-
-            .calendar-card {
-                padding: 30px 20px;
-            }
-
-            .countdown-box {
-                min-width: 85px;
-                padding: 15px 20px;
-            }
-
-            .countdown-num {
-                font-size: 35px;
-            }
+        .music-btn-style:active {
+            transform: scale(0.9);
         }
 
         @media (max-width: 480px) {
+            .card, .message-card, .calendar-card {
+                padding: 16px;
+            }
+
             .heading {
-                font-size: 26px;
+                font-size: 28px;
+                margin-bottom: 10px;
             }
 
             .message-text {
-                font-size: 16px;
+                font-size: 13px;
             }
 
             .option-btn {
-                font-size: 14px;
-                padding: 12px 15px;
+                padding: 9px 10px;
+                font-size: 11px;
+            }
+
+            .msg-title {
+                font-size: 20px;
             }
 
             .msg-body {
-                font-size: 15px;
+                font-size: 12px;
+                min-height: 50px;
             }
 
-            .countdown-box {
-                min-width: 75px;
-                padding: 12px 15px;
+            .heart-icon {
+                font-size: 30px;
+            }
+
+            .calendar-title {
+                font-size: 20px;
+            }
+
+            .date-input {
+                padding: 9px;
+                font-size: 12px;
             }
 
             .countdown-num {
-                font-size: 28px;
-            }
-
-            .countdown-label {
-                font-size: 10px;
+                font-size: 24px;
             }
         }
     </style>
@@ -504,100 +443,40 @@
         <source src="https://www.dropbox.com/scl/fi/9mlcszyjzwt5ndkow6bdn/GulabiSadi___-_-_____Official_-video___Sanju_Rathod___G-Spark___Prajakta___-marathi_Song-256k.mp3?rlkey=7zvxn32bkc8ohw7s2hfswliu9&st=cna60sjl&dl=1" type="audio/mpeg">
     </audio>
 
-    <!-- MUSIC CONTROL -->
-    <div id="music-btn" class="music-button">
-        <button onclick="playMusic()" class="music-btn-style">
-            🎵 PLAY MUSIC
-        </button>
+    <!-- MUSIC CONTROL - TOP LEFT, ALWAYS VISIBLE -->
+    <div class="music-button">
+        <button onclick="playMusic()" class="music-btn-style">🎵 PLAY</button>
     </div>
 
-    <style>
-        .music-button {
-            position: fixed;
-            bottom: 25px;
-            right: 20px;
-            z-index: 999;
-        }
-
-        .music-btn-style {
-            padding: 12px 18px;
-            font-family: 'Fredoka', sans-serif;
-            background: linear-gradient(135deg, #FF006E 0%, #00D9FF 100%);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 14px;
-            box-shadow: 0 0 20px rgba(255, 0, 110, 0.6);
-            transition: all 0.3s ease;
-        }
-
-        .music-btn-style:hover {
-            transform: scale(1.05);
-        }
-
-        .music-btn-style:active {
-            transform: scale(0.95);
-        }
-
-        @media (max-width: 768px) {
-            .music-button {
-                bottom: 20px;
-                right: 15px;
-            }
-
-            .music-btn-style {
-                padding: 14px 16px;
-                font-size: 13px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .music-button {
-                bottom: 15px;
-                right: 10px;
-            }
-
-            .music-btn-style {
-                padding: 12px 14px;
-                font-size: 12px;
-            }
-        }
-    </style>
-
     <div class="container">
-        <!-- PAGE 1: SELECTION -->
+        <!-- PAGE 1 -->
         <div class="page page-1 active">
-            <div class="hearts-bg" id="hearts1"></div>
-            <div class="selection-card">
+            <div class="card">
                 <div class="heading">Hii My Love 💕</div>
                 <div class="message-text" id="msg1"></div>
                 <div class="options-grid">
                     <button class="option-btn" onclick="selectOption('bava')">BAVA</button>
                     <button class="option-btn" onclick="selectOption('love')">LOVE</button>
-                    <button class="option-btn" onclick="selectOption('more')">MORE<br>THAN THAT</button>
-                    <button class="option-btn" onclick="selectOption('nothing')">NOTHING</button>
+                    <button class="option-btn" onclick="selectOption('more')">MORE</button>
+                    <button class="option-btn" onclick="selectOption('nothing')">NO</button>
                 </div>
             </div>
         </div>
 
-        <!-- PAGE 2: PERSONALIZED MESSAGE -->
+        <!-- PAGE 2 -->
         <div class="page page-2">
-            <div class="hearts-bg" id="hearts2"></div>
             <div class="message-card">
                 <div class="msg-title" id="msg2-title"></div>
                 <div class="heart-icon">💕</div>
                 <div class="msg-body" id="msg2-body"></div>
-                <button class="submit-btn" style="margin-top: 20px;" onclick="goToCalendar()">NEXT SURPRISE ✨</button>
+                <button class="submit-btn" onclick="goToCalendar()">NEXT ✨</button>
             </div>
         </div>
 
-        <!-- PAGE 3: BIRTHDAY CALENDAR -->
+        <!-- PAGE 3 -->
         <div class="page page-3">
-            <div class="hearts-bg" id="hearts3"></div>
             <div class="calendar-card">
-                <div class="calendar-title">When is your Birthday? 🎂</div>
+                <div class="calendar-title">Birthday? 🎂</div>
                 <div class="date-inputs">
                     <div>
                         <input type="number" class="date-input" id="day" placeholder="DD" min="1" max="31">
@@ -618,7 +497,7 @@
                     <div class="countdown-grid" id="countdown-grid"></div>
                     <div class="quote-section">
                         <div class="funny-quote" id="quote"></div>
-                        <div class="waiting-msg">✨ We are waiting for my princess birthday ✨</div>
+                        <div class="waiting-msg">✨ We wait for princess birthday ✨</div>
                     </div>
                 </div>
             </div>
@@ -630,49 +509,47 @@
 
         function playMusic() {
             const music = document.getElementById('bg-music');
-            const btn = document.getElementById('music-btn');
+            const btn = document.querySelector('.music-btn-style');
 
             music.currentTime = 13;
             music.volume = 0.3;
             music.play().then(() => {
-                btn.innerHTML = '<button onclick="pauseMusic()" style="padding: 12px 20px; font-family: \'Fredoka\', sans-serif; background: linear-gradient(135deg, #FFB703 0%, #FFC107 100%); color: #000; border: none; border-radius: 25px; cursor: pointer; font-weight: 700; font-size: 14px; box-shadow: 0 0 20px rgba(255, 183, 3, 0.6);">🔊 MUSIC ON</button>';
+                btn.textContent = '🔊 STOP';
+                btn.onclick = new Function("pauseMusic()");
             }).catch(e => {
-                alert('Please allow audio to play! 🎵');
+                alert('Enable audio! 🎵');
             });
         }
 
         function pauseMusic() {
             const music = document.getElementById('bg-music');
-            const btn = document.getElementById('music-btn');
+            const btn = document.querySelector('.music-btn-style');
 
             music.pause();
-            btn.innerHTML = '<button onclick="playMusic()" style="padding: 12px 20px; font-family: \'Fredoka\', sans-serif; background: linear-gradient(135deg, #FF006E 0%, #00D9FF 100%); color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: 700; font-size: 14px; box-shadow: 0 0 20px rgba(255, 0, 110, 0.6);">🎵 PLAY MUSIC</button>';
+            btn.textContent = '🎵 PLAY';
+            btn.onclick = new Function("playMusic()");
         }
 
         function createHearts(container) {
             const positions = [
-                { top: '10%', left: '10%', delay: '0s' },
-                { top: '20%', right: '15%', delay: '0.5s' },
-                { top: '50%', left: '5%', delay: '1s' },
-                { top: '60%', right: '10%', delay: '1.5s' },
-                { top: '30%', right: '20%', delay: '2s' }
+                { top: '10%', left: '10%' },
+                { top: '20%', right: '15%' },
+                { top: '50%', left: '5%' },
+                { top: '60%', right: '10%' }
             ];
 
-            positions.forEach(pos => {
+            positions.forEach((pos, i) => {
                 const heart = document.createElement('div');
                 heart.className = 'floating-heart';
                 heart.textContent = '💕';
                 heart.style.top = pos.top || 'auto';
-                heart.style.bottom = pos.bottom || 'auto';
                 heart.style.left = pos.left || 'auto';
                 heart.style.right = pos.right || 'auto';
-                heart.style.animationDelay = pos.delay;
-                heart.style.animationDuration = Math.random() * 2 + 5 + 's';
-                document.getElementById(container).appendChild(heart);
+                heart.style.animationDelay = (i * 0.5) + 's';
             });
         }
 
-        function typeWrite(el, txt, speed = 50) {
+        function typeWrite(el, txt, speed = 40) {
             return new Promise((resolve) => {
                 el.textContent = '';
                 let i = 0;
@@ -691,17 +568,16 @@
 
         async function selectOption(option) {
             if (option === 'nothing') {
-                alert('Arey, select one of the three! 😄');
+                alert('Come on! Pick one! 😄');
                 return;
             }
 
             selectedOption = option;
-            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            document.querySelectorAll('.option-btn').forEach(btn => btn.style.background = '');
+            event.target.style.background = 'linear-gradient(135deg, #FF006E 0%, #FF3B7F 100%)';
+            event.target.style.color = 'white';
 
-            setTimeout(() => {
-                goToPage2();
-            }, 800);
+            setTimeout(() => goToPage2(), 600);
         }
 
         async function goToPage2() {
@@ -710,29 +586,22 @@
             pages[1].classList.add('active');
 
             const titles = {
-                'bava': 'Yehhh My Love a small surprise from your BAVA 💕',
-                'love': 'Yehhh My Love a small surprise from your LOVE 💕',
-                'more': 'Yehhh My Love a small surprise from your SOULMATE 💕'
+                'bava': 'Surprise from your BAVA 💕',
+                'love': 'Surprise from your LOVE 💕',
+                'more': 'Surprise from your SOULMATE 💕'
             };
 
-            await typeWrite(document.getElementById('msg2-title'), titles[selectedOption], 60);
+            await typeWrite(document.getElementById('msg2-title'), titles[selectedOption], 50);
+            await new Promise(r => setTimeout(r, 300));
 
-            await new Promise(r => setTimeout(r, 400));
-
-            const message = "ni santosham lo nenu gurthuku rakapovachu kani niku badha vachinapudu, lonely ga feel inapudu illa em inaa nenu unna ani marchipomaka i am always for you MAA 💕\n\nYou mean the world to me, and I'm always here for you, through every moment of joy and every tear. You are my light, my strength, and my forever person!";
-
-            await typeWrite(document.getElementById('msg2-body'), message, 35);
-
-            createHearts('hearts2');
+            const message = "ni santosham lo nenu gurthuku rakapovachu kani niku badha vachinapudu, lonely feel inapudu illa nenu unna ani marchipomaka i am always for you MAA 💕";
+            await typeWrite(document.getElementById('msg2-body'), message, 30);
         }
 
         function goToCalendar() {
             const pages = document.querySelectorAll('.page');
             pages[1].classList.remove('active');
             pages[2].classList.add('active');
-
-            createHearts('hearts1');
-            createHearts('hearts3');
         }
 
         function calculateCountdown() {
@@ -741,7 +610,7 @@
             const year = parseInt(document.getElementById('year').value);
 
             if (!day || !month || !year) {
-                alert('Please fill all fields!');
+                alert('Fill all! 📅');
                 return;
             }
 
@@ -750,7 +619,7 @@
             const diff = targetDate - now;
 
             if (diff < 0) {
-                alert('Birthday passed! Select a future date!');
+                alert('Future date! 🎂');
                 return;
             }
 
@@ -761,34 +630,20 @@
 
             const grid = document.getElementById('countdown-grid');
             grid.innerHTML = `
-                <div class="countdown-box">
-                    <div class="countdown-num">${days}</div>
-                    <div class="countdown-label">DAYS</div>
-                </div>
-                <div class="countdown-box">
-                    <div class="countdown-num">${hours}</div>
-                    <div class="countdown-label">HOURS</div>
-                </div>
-                <div class="countdown-box">
-                    <div class="countdown-num">${minutes}</div>
-                    <div class="countdown-label">MINUTES</div>
-                </div>
-                <div class="countdown-box">
-                    <div class="countdown-num">${seconds}</div>
-                    <div class="countdown-label">SECONDS</div>
-                </div>
+                <div class="countdown-box"><div class="countdown-num">${days}</div><div class="countdown-label">DAYS</div></div>
+                <div class="countdown-box"><div class="countdown-num">${hours}</div><div class="countdown-label">HRS</div></div>
+                <div class="countdown-box"><div class="countdown-num">${minutes}</div><div class="countdown-label">MINS</div></div>
+                <div class="countdown-box"><div class="countdown-num">${seconds}</div><div class="countdown-label">SECS</div></div>
             `;
 
             const quotes = [
-                '🎂 Your birthday is coming... and so is my love for you! 💕',
-                '✨ Count down to the day the world got the greatest gift! 🎁',
-                '💫 Every second closer to celebrating YOU! 🎉',
-                '🌟 The countdown to magic begins! 💕',
-                '🎊 Days till the queen of my heart celebrates! 👑'
+                '🎂 Countdown to the best day! 💕',
+                '✨ Magic coming soon! 🎉',
+                '💫 Days to celebrate YOU! 👑'
             ];
 
             const quote = quotes[Math.floor(Math.random() * quotes.length)];
-            typeWrite(document.getElementById('quote'), quote, 40);
+            typeWrite(document.getElementById('quote'), quote, 35);
 
             document.getElementById('countdown').classList.add('show');
 
@@ -808,9 +663,7 @@
             }, 1000);
         }
 
-        // Initialize page 1
-        typeWrite(document.getElementById('msg1'), 'a small surprise from your... wait who am i to you?', 45);
-        createHearts('hearts1');
+        typeWrite(document.getElementById('msg1'), 'a small surprise from your... who am i?', 40);
     </script>
 </body>
 </html>
