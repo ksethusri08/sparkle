@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Surprise</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@400;500;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        :root {
+            --primary: #2D1B4E;
+            --accent: #FF006E;
+            --accent-light: #00D9FF;
+            --accent-warm: #FFB703;
+            --bg: #0F0A1A;
+            --text-primary: #F5F5F5;
+            --text-secondary: #B0B0B0;
+            --card-bg: #1a0f2e;
+            --shadow: rgba(255, 0, 110, 0.2);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-primary);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            overflow-y: auto;
+        }
+
+        .page.active {
+            opacity: 1;
+            pointer-events: all;
+            z-index: 10;
+        }
+
+        /* PAGE 1 TRANSITION */
+        .page-1 {
+            background: linear-gradient(135deg, #0F0A1A 0%, #1a0f2e 100%);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            transform: scale(0.85);
+        }
+
+        .page-1.active {
+            transform: scale(1);
+        }
+
+        /* PAGE 2 TRANSITION */
+        .page-2 {
+            background: linear-gradient(135deg, #1a0f2e 0%, #2a1a4e 100%);
+            transition: opacity 1s ease, transform 1s ease;
+            transform: rotateX(-90deg);
+        }
+
+        .page-2.active {
+            transform: rotateX(0deg);
+        }
+
+        /* PAGE 3 TRANSITION */
+        .page-3 {
+            background: linear-gradient(135deg, #2a1a4e 0%, #0F0A1A 100%);
+            transition: opacity 1.2s ease, transform 1.2s ease;
+            transform: translateY(150px) rotateZ(45deg);
+        }
+
+        .page-3.active {
+            transform: translateY(0) rotateZ(0deg);
+        }
+
+        /* FLOATING HEARTS */
+        .hearts-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 30px;
+            animation: float-heart 6s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float-heart {
+            0% { transform: translateY(0) translateX(0) rotate(0deg) scale(1); }
+            50% { transform: translateY(-50px) translateX(30px) rotate(180deg) scale(1.1); }
+            100% { transform: translateY(0) translateX(0) rotate(360deg) scale(1); }
+        }
+
+        /* PAGE 1: SELECTION */
+        .selection-card {
+            background: rgba(26, 15, 46, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px 35px;
+            max-width: 600px;
+            width: 95%;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(255, 0, 110, 0.4);
+            border: 2px solid rgba(255, 0, 110, 0.3);
+            position: relative;
+            z-index: 5;
+        }
+
+        .heading {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF006E 0%, #00D9FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 0, 110, 0.5); }
+            50% { text-shadow: 0 0 30px rgba(0, 217, 255, 0.8); }
+        }
+
+        .message-text {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin: 25px 0;
+            min-height: 60px;
+            line-height: 1.6;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .option-btn {
+            padding: 15px 20px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            border: 2px solid rgba(255, 0, 110, 0.5);
+            background: rgba(255, 0, 110, 0.1);
+            color: #FF006E;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 110, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .option-btn:hover::before {
+            left: 100%;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 0, 110, 0.3);
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.6);
+            transform: scale(1.05);
+        }
+
+        .option-btn.active {
+            background: linear-gradient(135deg, #FF006E 0%, #FF3B7F 100%);
+            color: white;
+            box-shadow: 0 0 30px rgba(255, 0, 110, 0.8);
+        }
+
+        /* PAGE 2: MESSAGE */
+        .message-card {
+            background: rgba(26, 15, 46, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px 35px;
+            max-width: 650px;
+            width: 95%;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(0, 217, 255, 0.4);
+            border: 2px solid rgba(0, 217, 255, 0.3);
+            position: relative;
+            z-index: 5;
+        }
+
+        .msg-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #00D9FF;
+            margin-bottom: 30px;
+            min-height: 45px;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { text-shadow: 0 0 15px rgba(0, 217, 255, 0.5); }
+            50% { text-shadow: 0 0 40px rgba(0, 217, 255, 0.9); }
+        }
+
+        .msg-body {
+            font-size: 17px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin: 20px 0;
+            min-height: 100px;
+        }
+
+        .heart-icon {
+            font-size: 50px;
+            margin: 20px 0;
+            animation: beat 1s ease-in-out infinite;
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.2); }
+            50% { transform: scale(1); }
+        }
+
+        /* PAGE 3: BIRTHDAY PICKER */
+        .calendar-card {
+            background: rgba(26, 15, 46, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px 35px;
+            max-width: 700px;
+            width: 95%;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(255, 183, 3, 0.4);
+            border: 2px solid rgba(255, 183, 3, 0.3);
+            position: relative;
+            z-index: 5;
+        }
+
+        .calendar-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #FFB703;
+            margin-bottom: 30px;
+        }
+
+        .date-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .date-input {
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid rgba(255, 183, 3, 0.5);
+            background: rgba(255, 183, 3, 0.1);
+            color: var(--text-primary);
+            border-radius: 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .date-input:focus {
+            outline: none;
+            background: rgba(255, 183, 3, 0.2);
+            box-shadow: 0 0 20px rgba(255, 183, 3, 0.6);
+        }
+
+        .date-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        .submit-btn {
+            margin-top: 25px;
+            padding: 15px 40px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            background: linear-gradient(135deg, #FFB703 0%, #FFC107 100%);
+            color: #000;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 183, 3, 0.8);
+        }
+
+        /* COUNTDOWN DISPLAY */
+        .countdown-display {
+            margin-top: 40px;
+            display: none;
+        }
+
+        .countdown-display.show {
+            display: block;
+            animation: slideIn 1s ease-out;
+        }
+
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .countdown-grid {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .countdown-box {
+            background: rgba(255, 183, 3, 0.1);
+            border: 2px solid rgba(255, 183, 3, 0.4);
+            border-radius: 15px;
+            padding: 20px 25px;
+            min-width: 100px;
+            position: relative;
+        }
+
+        .countdown-num {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 45px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFB703 0%, #FFC107 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: countdownDrop 1s ease-out;
+        }
+
+        @keyframes countdownDrop {
+            0% { opacity: 0; transform: translateY(-50px) scale(0.8); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .countdown-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 8px;
+        }
+
+        .countdown-box:nth-child(2) .countdown-num {
+            animation: countdownUp 1s ease-out;
+        }
+
+        @keyframes countdownUp {
+            0% { opacity: 0; transform: translateY(50px) scale(0.8); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .quote-section {
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 2px solid rgba(255, 183, 3, 0.3);
+        }
+
+        .funny-quote {
+            font-size: 18px;
+            color: #00D9FF;
+            font-style: italic;
+            margin-bottom: 20px;
+            min-height: 40px;
+        }
+
+        .waiting-msg {
+            font-size: 16px;
+            color: #FF006E;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            .heading {
+                font-size: 32px;
+            }
+
+            .selection-card {
+                padding: 30px 20px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .message-card {
+                padding: 30px 20px;
+            }
+
+            .msg-title {
+                font-size: 28px;
+            }
+
+            .calendar-card {
+                padding: 30px 20px;
+            }
+
+            .countdown-box {
+                min-width: 85px;
+                padding: 15px 20px;
+            }
+
+            .countdown-num {
+                font-size: 35px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .heading {
+                font-size: 26px;
+            }
+
+            .message-text {
+                font-size: 16px;
+            }
+
+            .option-btn {
+                font-size: 14px;
+                padding: 12px 15px;
+            }
+
+            .msg-body {
+                font-size: 15px;
+            }
+
+            .countdown-box {
+                min-width: 75px;
+                padding: 12px 15px;
+            }
+
+            .countdown-num {
+                font-size: 28px;
+            }
+
+            .countdown-label {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- PAGE 1: SELECTION -->
+        <div class="page page-1 active">
+            <div class="hearts-bg" id="hearts1"></div>
+            <div class="selection-card">
+                <div class="heading">Hii My Love 💕</div>
+                <div class="message-text" id="msg1"></div>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="selectOption('bava')">BAVA</button>
+                    <button class="option-btn" onclick="selectOption('love')">LOVE</button>
+                    <button class="option-btn" onclick="selectOption('more')">MORE<br>THAN THAT</button>
+                    <button class="option-btn" onclick="selectOption('nothing')">NOTHING</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 2: PERSONALIZED MESSAGE -->
+        <div class="page page-2">
+            <div class="hearts-bg" id="hearts2"></div>
+            <div class="message-card">
+                <div class="msg-title" id="msg2-title"></div>
+                <div class="heart-icon">💕</div>
+                <div class="msg-body" id="msg2-body"></div>
+                <button class="submit-btn" style="margin-top: 20px;" onclick="goToCalendar()">NEXT SURPRISE ✨</button>
+            </div>
+        </div>
+
+        <!-- PAGE 3: BIRTHDAY CALENDAR -->
+        <div class="page page-3">
+            <div class="hearts-bg" id="hearts3"></div>
+            <div class="calendar-card">
+                <div class="calendar-title">When is your Birthday? 🎂</div>
+                <div class="date-inputs">
+                    <div>
+                        <input type="number" class="date-input" id="day" placeholder="DD" min="1" max="31">
+                        <div class="date-label">Day</div>
+                    </div>
+                    <div>
+                        <input type="number" class="date-input" id="month" placeholder="MM" min="1" max="12">
+                        <div class="date-label">Month</div>
+                    </div>
+                    <div>
+                        <input type="number" class="date-input" id="year" placeholder="YYYY" min="1950" max="2024">
+                        <div class="date-label">Year</div>
+                    </div>
+                </div>
+                <button class="submit-btn" onclick="calculateCountdown()">CALCULATE 💫</button>
+
+                <div class="countdown-display" id="countdown">
+                    <div class="countdown-grid" id="countdown-grid"></div>
+                    <div class="quote-section">
+                        <div class="funny-quote" id="quote"></div>
+                        <div class="waiting-msg">✨ We are waiting for my princess birthday ✨</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedOption = '';
+
+        function createHearts(container) {
+            const positions = [
+                { top: '10%', left: '10%', delay: '0s' },
+                { top: '20%', right: '15%', delay: '0.5s' },
+                { top: '50%', left: '5%', delay: '1s' },
+                { top: '60%', right: '10%', delay: '1.5s' },
+                { top: '30%', right: '20%', delay: '2s' }
+            ];
+
+            positions.forEach(pos => {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = '💕';
+                heart.style.top = pos.top || 'auto';
+                heart.style.bottom = pos.bottom || 'auto';
+                heart.style.left = pos.left || 'auto';
+                heart.style.right = pos.right || 'auto';
+                heart.style.animationDelay = pos.delay;
+                heart.style.animationDuration = Math.random() * 2 + 5 + 's';
+                document.getElementById(container).appendChild(heart);
+            });
+        }
+
+        function typeWrite(el, txt, speed = 50) {
+            return new Promise((resolve) => {
+                el.textContent = '';
+                let i = 0;
+                function type() {
+                    if (i < txt.length) {
+                        el.textContent += txt.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    } else {
+                        resolve();
+                    }
+                }
+                type();
+            });
+        }
+
+        async function selectOption(option) {
+            if (option === 'nothing') {
+                alert('Arey, select one of the three! 😄');
+                return;
+            }
+
+            selectedOption = option;
+            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            setTimeout(() => {
+                goToPage2();
+            }, 800);
+        }
+
+        async function goToPage2() {
+            const pages = document.querySelectorAll('.page');
+            pages[0].classList.remove('active');
+            pages[1].classList.add('active');
+
+            const titles = {
+                'bava': 'Yehhh My Love a small surprise from your BAVA 💕',
+                'love': 'Yehhh My Love a small surprise from your LOVE 💕',
+                'more': 'Yehhh My Love a small surprise from your SOULMATE 💕'
+            };
+
+            await typeWrite(document.getElementById('msg2-title'), titles[selectedOption], 60);
+
+            await new Promise(r => setTimeout(r, 400));
+
+            const message = "ni santosham lo nenu gurthuku rakapovachu kani niku badha vachinapudu, lonely ga feel inapudu illa em inaa nenu unna ani marchipomaka i am always for you MAA 💕\n\nYou mean the world to me, and I'm always here for you, through every moment of joy and every tear. You are my light, my strength, and my forever person!";
+
+            await typeWrite(document.getElementById('msg2-body'), message, 35);
+
+            createHearts('hearts2');
+        }
+
+        function goToCalendar() {
+            const pages = document.querySelectorAll('.page');
+            pages[1].classList.remove('active');
+            pages[2].classList.add('active');
+
+            createHearts('hearts1');
+            createHearts('hearts3');
+        }
+
+        function calculateCountdown() {
+            const day = parseInt(document.getElementById('day').value);
+            const month = parseInt(document.getElementById('month').value);
+            const year = parseInt(document.getElementById('year').value);
+
+            if (!day || !month || !year) {
+                alert('Please fill all fields!');
+                return;
+            }
+
+            const targetDate = new Date(year, month - 1, day, 0, 0, 0).getTime();
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff < 0) {
+                alert('Birthday passed! Select a future date!');
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            const grid = document.getElementById('countdown-grid');
+            grid.innerHTML = `
+                <div class="countdown-box">
+                    <div class="countdown-num">${days}</div>
+                    <div class="countdown-label">DAYS</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-num">${hours}</div>
+                    <div class="countdown-label">HOURS</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-num">${minutes}</div>
+                    <div class="countdown-label">MINUTES</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-num">${seconds}</div>
+                    <div class="countdown-label">SECONDS</div>
+                </div>
+            `;
+
+            const quotes = [
+                '🎂 Your birthday is coming... and so is my love for you! 💕',
+                '✨ Count down to the day the world got the greatest gift! 🎁',
+                '💫 Every second closer to celebrating YOU! 🎉',
+                '🌟 The countdown to magic begins! 💕',
+                '🎊 Days till the queen of my heart celebrates! 👑'
+            ];
+
+            const quote = quotes[Math.floor(Math.random() * quotes.length)];
+            typeWrite(document.getElementById('quote'), quote, 40);
+
+            document.getElementById('countdown').classList.add('show');
+
+            setInterval(() => {
+                const now2 = new Date().getTime();
+                const diff2 = targetDate - now2;
+                const d = Math.floor(diff2 / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff2 % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff2 % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff2 % (1000 * 60)) / 1000);
+
+                const boxes = document.querySelectorAll('.countdown-num');
+                if (boxes[0]) boxes[0].textContent = d;
+                if (boxes[1]) boxes[1].textContent = h;
+                if (boxes[2]) boxes[2].textContent = m;
+                if (boxes[3]) boxes[3].textContent = s;
+            }, 1000);
+        }
+
+        // Initialize page 1
+        typeWrite(document.getElementById('msg1'), 'a small surprise from your... wait who am i to you?', 45);
+        createHearts('hearts1');
+    </script>
+</body>
+</html>
