@@ -505,11 +505,66 @@
     </audio>
 
     <!-- MUSIC CONTROL -->
-    <div id="music-btn" style="position: fixed; top: 20px; right: 20px; z-index: 999;">
-        <button onclick="playMusic()" style="padding: 12px 20px; font-family: 'Fredoka', sans-serif; background: linear-gradient(135deg, #FF006E 0%, #00D9FF 100%); color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: 700; font-size: 14px; box-shadow: 0 0 20px rgba(255, 0, 110, 0.6);">
+    <div id="music-btn" class="music-button">
+        <button onclick="playMusic()" class="music-btn-style">
             🎵 PLAY MUSIC
         </button>
     </div>
+
+    <style>
+        .music-button {
+            position: fixed;
+            bottom: 25px;
+            right: 20px;
+            z-index: 999;
+        }
+
+        .music-btn-style {
+            padding: 12px 18px;
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #FF006E 0%, #00D9FF 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .music-btn-style:hover {
+            transform: scale(1.05);
+        }
+
+        .music-btn-style:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            .music-button {
+                bottom: 20px;
+                right: 15px;
+            }
+
+            .music-btn-style {
+                padding: 14px 16px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .music-button {
+                bottom: 15px;
+                right: 10px;
+            }
+
+            .music-btn-style {
+                padding: 12px 14px;
+                font-size: 12px;
+            }
+        }
+    </style>
 
     <div class="container">
         <!-- PAGE 1: SELECTION -->
