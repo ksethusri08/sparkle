@@ -499,6 +499,11 @@
     </style>
 </head>
 <body>
+    <!-- BACKGROUND MUSIC -->
+    <audio id="bg-music" autoplay loop volume="0.3">
+        <source src="https://drive.google.com/uc?export=download&id=1Sh3HRI6VL8UB1zNcEv2DW2WzfpRfg7sE" type="audio/mpeg">
+    </audio>
+
     <div class="container">
         <!-- PAGE 1: SELECTION -->
         <div class="page page-1 active">
@@ -560,6 +565,13 @@
 
     <script>
         let selectedOption = '';
+
+        // Start music from 13 seconds
+        window.addEventListener('load', () => {
+            const music = document.getElementById('bg-music');
+            music.currentTime = 13;
+            music.play().catch(e => console.log('Audio autoplay blocked:', e));
+        });
 
         function createHearts(container) {
             const positions = [
