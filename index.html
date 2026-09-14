@@ -500,9 +500,16 @@
 </head>
 <body>
     <!-- BACKGROUND MUSIC -->
-    <audio id="bg-music" autoplay loop volume="0.3">
+    <audio id="bg-music" loop>
         <source src="https://www.dropbox.com/scl/fi/9mlcszyjzwt5ndkow6bdn/GulabiSadi___-_-_____Official_-video___Sanju_Rathod___G-Spark___Prajakta___-marathi_Song-256k.mp3?rlkey=7zvxn32bkc8ohw7s2hfswliu9&st=cna60sjl&dl=1" type="audio/mpeg">
     </audio>
+
+    <!-- MUSIC CONTROL -->
+    <div id="music-btn" style="position: fixed; top: 20px; right: 20px; z-index: 999;">
+        <button onclick="playMusic()" style="padding: 12px 20px; font-family: 'Fredoka', sans-serif; background: linear-gradient(135deg, #FF006E 0%, #00D9FF 100%); color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: 700; font-size: 14px; box-shadow: 0 0 20px rgba(255, 0, 110, 0.6);">
+            🎵 PLAY MUSIC
+        </button>
+    </div>
 
     <div class="container">
         <!-- PAGE 1: SELECTION -->
@@ -566,12 +573,26 @@
     <script>
         let selectedOption = '';
 
-        // Start music from 13 seconds
-        window.addEventListener('load', () => {
+        function playMusic() {
             const music = document.getElementById('bg-music');
+            const btn = document.getElementById('music-btn');
+
             music.currentTime = 13;
-            music.play().catch(e => console.log('Audio autoplay blocked:', e));
-        });
+            music.volume = 0.3;
+            music.play().then(() => {
+                btn.innerHTML = '<button onclick="pauseMusic()" style="padding: 12px 20px; font-family: \'Fredoka\', sans-serif; background: linear-gradient(135deg, #FFB703 0%, #FFC107 100%); color: #000; border: none; border-radius: 25px; cursor: pointer; font-weight: 700; font-size: 14px; box-shadow: 0 0 20px rgba(255, 183, 3, 0.6);">🔊 MUSIC ON</button>';
+            }).catch(e => {
+                alert('Please allow audio to play! 🎵');
+            });
+        }
+
+        function pauseMusic() {
+            const music = document.getElementById('bg-music');
+            const btn = document.getElementById('music-btn');
+
+            music.pause();
+            btn.innerHTML = '<button onclick="playMusic()" style="padding: 12px 20px; font-family: \'Fredoka\', sans-serif; background: linear-gradient(135deg, #FF006E 0%, #00D9FF 100%); color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: 700; font-size: 14px; box-shadow: 0 0 20px rgba(255, 0, 110, 0.6);">🎵 PLAY MUSIC</button>';
+        }
 
         function createHearts(container) {
             const positions = [
